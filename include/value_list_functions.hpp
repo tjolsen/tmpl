@@ -194,6 +194,19 @@ auto slice(value_list<V...> List)
     return detail::slice_helper<Start,End>(List, std::make_integer_sequence<int, List.size()>{});
 }
 
+
+/**
+ * Apply a function to each value in the value_list
+ * and return a new value_list containing these values.
+ * Similar to std::transform.
+ */
+template<auto ...V, typename F>
+auto transform(value_list<V...>, F &&f) {
+    return (value_list<f(V)>{} | ... | value_list<>{});
+}
+
+
+
 ///@{
 /**
  * Comparison operators for single-element value lists (aka Values)

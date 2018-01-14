@@ -15,13 +15,18 @@ set(SOURCE_FILES
         ${CMAKE_SOURCE_DIR}/include/list_sort.hpp
         ${CMAKE_SOURCE_DIR}/include/type_collections.hpp
         ${CMAKE_SOURCE_DIR}/include/type_list.hpp
+        ${CMAKE_SOURCE_DIR}/include/type_list_creation.hpp
         ${CMAKE_SOURCE_DIR}/include/type_list_functions.hpp
         ${CMAKE_SOURCE_DIR}/include/type_value_pair.hpp
         ${CMAKE_SOURCE_DIR}/include/value_list.hpp
+        ${CMAKE_SOURCE_DIR}/include/value_list_creation.hpp
         ${CMAKE_SOURCE_DIR}/include/value_list_functions.hpp
+
+        ${CMAKE_SOURCE_DIR}/include/utils/int_pow.hpp
 
         ${CMAKE_SOURCE_DIR}/include/detail/concepts_detail.hpp
         ${CMAKE_SOURCE_DIR}/include/detail/list_sort_detail.hpp
+        ${CMAKE_SOURCE_DIR}/include/detail/value_list_creation_detail.hpp
         )
 
 add_library(tmpl INTERFACE)

@@ -68,7 +68,7 @@ template<auto ...V>
 struct is_value_list<value_list<V...>> : std::true_type {};
 
 template<typename T>
-inline bool is_value_list_v = is_value_list<T>::value;
+constexpr inline bool is_value_list_v = is_value_list<T>::value;
 ///@}
 
 
