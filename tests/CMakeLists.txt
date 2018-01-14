@@ -1,7 +1,7 @@
 set(SOURCE_FILES
         concepts.cpp
         list_creation.cpp
-
+        value_list_math.cpp
 
         catch_main.cpp
         catch.hpp

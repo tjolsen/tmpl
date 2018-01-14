@@ -139,10 +139,6 @@ TODO
 - real-life (useful) examples
     - topological sort of types with dependencies (useful for accumulators?)
 - value_list math & reductions
-    - sum
-    - min
-    - max
-    - ...
     - cumsum
     - cumprod
 - boolean functions
@@ -152,7 +148,5 @@ TODO
 - selection functions
     - select_if (return elements of type/value_list satisfying a boolean function)
     - indexing (operator\[\](std::integral_constant))
-- list creation
-    - arithmetic_sequence (value_list)
-    - geometric_sequence (value_list)
+
     

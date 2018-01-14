@@ -21,6 +21,7 @@ set(SOURCE_FILES
         ${CMAKE_SOURCE_DIR}/include/value_list.hpp
         ${CMAKE_SOURCE_DIR}/include/value_list_creation.hpp
         ${CMAKE_SOURCE_DIR}/include/value_list_functions.hpp
+        ${CMAKE_SOURCE_DIR}/include/value_list_math.hpp
 
         ${CMAKE_SOURCE_DIR}/include/utils/int_pow.hpp
 
