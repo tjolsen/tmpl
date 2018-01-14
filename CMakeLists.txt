@@ -12,9 +12,9 @@ set(SOURCE_FILES
 
         ${CMAKE_SOURCE_DIR}/include/concepts.hpp
         ${CMAKE_SOURCE_DIR}/include/for_constexpr.hpp
-        ${CMAKE_SOURCE_DIR}/include/mp_funs.hpp
         ${CMAKE_SOURCE_DIR}/include/type_collections.hpp
         ${CMAKE_SOURCE_DIR}/include/type_list.hpp
+        ${CMAKE_SOURCE_DIR}/include/type_list_functions.hpp
         ${CMAKE_SOURCE_DIR}/include/value_list.hpp
         )
 
@@ -42,6 +42,7 @@ install(EXPORT tmplConfig
 #-------------------------------
 add_executable(sandbox sandbox.cpp)
 target_link_libraries(sandbox PUBLIC tmpl)
+target_compile_options(sandbox PUBLIC "-Wall")
 
 #-------------------------------
 # Examples of usage

@@ -11,6 +11,8 @@ int main()
     struct A
     {
         int a;
+        int afunc(int, int) { return 0; }
+        static int static_afunc() { return 0; }
         using value_type = int;
     };
 
@@ -46,4 +48,12 @@ int main()
                   ? "Is constexpr" : "Isn't constexpr") << std::endl << std::endl;
 
 
+    std::cout << "A::afunc is nonstatic member function = " << tmpl_has_nonstatic_member_function(A,afunc) <<std::endl;
+    std::cout << "A::afunc is static member function = " << tmpl_has_static_member_function(A,afunc) <<std::endl;
+    std::cout << "A::static_afunc is nonstatic member function = " << tmpl_has_nonstatic_member_function(A,static_afunc) <<std::endl;
+    std::cout << "A::static_afunc is static member function = " << tmpl_has_static_member_function(A,static_afunc) <<std::endl;
+    std::cout << "A::a isfunction = " << tmpl_has_nonstatic_member_function(A,a) <<std::endl;
+    std::cout << "A::afunc ismember = " << tmpl_has_member(A,afunc) << std::endl;
+    std::cout << "B::afunc exists and is nonstatic member function = " << tmpl_has_nonstatic_member_function(B,afunc) <<std::endl;
+    std::cout << "B::afunc exists and is static member function = " << tmpl_has_static_member_function(B,afunc) <<std::endl;
 }

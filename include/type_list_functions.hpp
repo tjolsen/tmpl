@@ -141,6 +141,10 @@ constexpr void for_each(type_list<T...>, F &&f)
     (f(type_list<T>{}), ...);
 }
 
+template<typename ...T, typename ...V>
+auto zip(type_list<T...>, type_list<V...>) {
+    return (type_list<type_list<T,V>>{} | ... | type_list<>{});
+}
 
 NAMESPACE_TMPL_CLOSE
 

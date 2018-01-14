@@ -10,7 +10,7 @@ bug-prone part of code.
 Compatibility
 -------------
 This library requires C++17 features (fold expressions, constexpr if,
-constexpr lambdas, to name a few), so a recent compiler is required.
+constexpr lambdas, auto templates), so a recent compiler is required.
 The library is being developed using gcc-7.1 and clang-5.0, so 
 it should always work with at least these compilers.
 

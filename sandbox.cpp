@@ -21,26 +21,52 @@ void test_contents(tmpl::type_list<T...> List)
 }
 
 
+template<auto First, auto Second>
+struct value_pair{
+    static constexpr auto first() { return First; }
+    static constexpr auto second() { return Second; }
+};
+
+template<auto ...A, auto ...B>
+auto zip(tmpl::value_list<A...> LA, tmpl::value_list<B...> LB) {
+    static_assert(LA.size() == LB.size(), "Must be equal length");
+    return (tmpl::type_list<value_pair<A,B>>{} | ... | tmpl::type_list<>{});
+};
+
+template<auto ...A, auto ...B>
+auto operator|(tmpl::value_list<A...>, tmpl::value_list<B...>)
+{
+        return tmpl::value_list<A..., B...>{};
+};
+
 int main()
 {
+    tmpl::value_list<1,2,3,4> L1;
+    tmpl::value_list<1,2,3,4lu> L2;
 
-    struct A {
-        int a;
-        using value_type = double;
-    };
-    struct B {
-        int b;
-    };
+    tmpl::type_list<int, int, int> T1;
+    tmpl::type_list<char, char, char> T2;
 
-    constexpr bool aa = tmpl_has_member(A,a);
-    constexpr bool ba = tmpl_has_member(B,a);
-    std::integral_constant<bool, aa> Aacheck;
-    std::integral_constant<bool, ba> Bacheck;
+    auto Tzip = tmpl::zip(T1,T2);
+    tmpl::for_each(Tzip, [](auto &&x) {
+        auto xval = tmpl::unbox(x);
+        auto a = xval.head();
+        auto b = xval.tail();
 
-    cout << "A has member a: " << tmpl_has_member(A,a) << endl;
-    cout << "B has member a: " << tmpl_has_member(B,a) << endl;
+        auto aval = tmpl::unbox(a);
+        auto bval = tmpl::unbox(b);
+        aval = 'a';
+        bval = 'b';
 
-    cout << "A has value_type: " << tmpl_has_typedef(A,value_type) << endl;
-    cout << "B has value_type: " << tmpl_has_typedef(B,value_type) << endl;
+        cout << "aval = " << aval << "  bval = " << bval << endl;
+    });
+
+    auto zipped = zip(L1, L2);
+
+    tmpl::for_each(zipped,
+    [](auto &&xT){
+        auto x = tmpl::unbox(xT);
+        cout << "(" << x.first() << ", " << x.second() << ")" << endl;
+    });
 
 }
