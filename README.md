@@ -135,6 +135,24 @@ tmpl_has_member(A, a)
 
 TODO
 ====
-- make tv_pair (type-value pair) with a comparison operator<
-- zip function for type_list with value_list (yields type_list of tv_pair types)
-- type_list sorting (supply comparator)
+- more concepts!
+- real-life (useful) examples
+    - topological sort of types with dependencies (useful for accumulators?)
+- value_list math & reductions
+    - sum
+    - min
+    - max
+    - ...
+    - cumsum
+    - cumprod
+- boolean functions
+    - operator==(list A, list B)
+    - any(list, f)
+    - all(list, f)
+- selection functions
+    - select_if (return elements of type/value_list satisfying a boolean function)
+    - indexing (operator\[\](std::integral_constant))
+- list creation
+    - arithmetic_sequence (value_list)
+    - geometric_sequence (value_list)
+    

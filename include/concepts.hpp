@@ -6,38 +6,16 @@
 #define TMPL_CONCEPTS_HPP
 
 #include "tmpl_common.hpp"
+#include "type_list.hpp"
 #include "type_list_functions.hpp"
+
+#include "value_list.hpp"
+
+#include "detail/concepts_detail.hpp"
 #include <type_traits>
 
 NAMESPACE_TMPL_OPEN
 
-namespace detail {
-
-template<typename F, typename X, typename = void>
-struct is_valid_helper : std::false_type
-{
-};
-
-template<typename F, typename X>
-struct is_valid_helper<F, X, std::void_t<std::result_of_t<F(X)>>> : std::true_type
-{
-};
-
-template<typename>
-struct member_ptr_helper
-{
-};
-
-template<typename U, typename T>
-struct member_ptr_helper<U T::*>
-{
-    using type = U;
-};
-
-template<typename T>
-using member_ptr_helper_t = typename member_ptr_helper<T>::type;
-
-} //end namespace detail
 
 
 /**
@@ -62,6 +40,40 @@ constexpr auto is_valid(F f)
         return detail::is_valid_helper<F, decltype(unbox(x))>::value;
     };
 }
+
+
+///@{
+/**
+ * Trait to test whether a type is a type_list
+ */
+template<typename ...T>
+struct is_type_list : std::false_type {};
+
+template<typename ...T>
+struct is_type_list<type_list<T...>> : std::true_type {};
+
+template<typename ...T>
+inline bool is_type_list_v = is_type_list<T...>::value;
+///@}
+
+
+///@{
+/**
+ * Trait to test whether a type is a value_list
+ */
+template<typename T>
+struct is_value_list : std::false_type {};
+
+template<auto ...V>
+struct is_value_list<value_list<V...>> : std::true_type {};
+
+template<typename T>
+inline bool is_value_list_v = is_value_list<T>::value;
+///@}
+
+
+
+
 
 NAMESPACE_TMPL_CLOSE
 

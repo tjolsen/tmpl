@@ -19,6 +19,9 @@ set(SOURCE_FILES
         ${CMAKE_SOURCE_DIR}/include/type_value_pair.hpp
         ${CMAKE_SOURCE_DIR}/include/value_list.hpp
         ${CMAKE_SOURCE_DIR}/include/value_list_functions.hpp
+
+        ${CMAKE_SOURCE_DIR}/include/detail/concepts_detail.hpp
+        ${CMAKE_SOURCE_DIR}/include/detail/list_sort_detail.hpp
         )
 
 add_library(tmpl INTERFACE)
@@ -48,10 +51,19 @@ target_link_libraries(sandbox PUBLIC tmpl)
 target_compile_options(sandbox PUBLIC "-Wall")
 
 #-------------------------------
-# Examples of usage
+# Examples of library usage
 #-------------------------------
 option(BUILD_EXAMPLES "Build tmpl examples" ON)
 
 if(BUILD_EXAMPLES)
+    add_subdirectory(tests)
+endif()
+
+#-------------------------------
+# Unittests
+#-------------------------------
+option(BUILD_TESTS "Build tmpl tests" ON)
+
+if(BUILD_TESTS)
     add_subdirectory(examples)
 endif()
