@@ -20,7 +20,7 @@ int main() {
     //Print a tuple created from a list
     std::cout << "List from tuple:\n";
     tmpl::for_constexpr<0,List.size()>([&tup](auto I) {
-        std::cout << std::get<I>(tup) << " ";
+        std::cout << std::get<I>(tup) << ' ';
     });
     std::cout << std::endl << std::endl;
 
@@ -29,7 +29,7 @@ int main() {
     //print a sliced value_list
     std::cout << "Sliced list:\n";
     tmpl::for_each(sliced_list, [](auto &&x) {
-        std::cout << x << " ";
+        std::cout << x << ' ';
     });
     std::cout << std::endl << std::endl;
 
@@ -41,7 +41,7 @@ int main() {
 
     std::cout << "Sorted list:\n";
     tmpl::for_each(sorted_LL, [](auto &&x) {
-        std::cout << x << " ";
+        std::cout << x << ' ';
     });
     std::cout << std::endl << std::endl;
 }

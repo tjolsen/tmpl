@@ -42,6 +42,32 @@ constexpr auto merge(value_list<V...> A, value_list<U...> B, Compare && compare)
     }
 }
 
+
+template<typename ...V, typename ...U, typename Compare>
+constexpr auto merge(type_list<V...> A, type_list<U...> B, Compare && compare) {
+
+    if constexpr (A.size() == 0 && B.size() == 0) {
+        return type_list<>{};
+    }
+    else if constexpr (A.size() == 0) {
+        return B;
+    }
+    else if constexpr (B.size() == 0) {
+        return A;
+    }
+    else {
+
+        auto Ahead = A.head();
+        auto Bhead = B.head();
+
+        if constexpr (compare(Ahead,Bhead)) {
+            return Ahead | merge(A.tail(), B, std::forward<Compare>(compare));
+        } else {
+            return Bhead | merge(A, B.tail(), std::forward<Compare>(compare));
+        }
+    }
+}
+
 } //end namespace detail
 
 
@@ -52,7 +78,19 @@ auto sort(value_list<V...> List, Compare && compare) {
         return List;
     }
     else {
+        constexpr auto Midpoint = List.size()/2;
+        return detail::merge(slice<0,Midpoint>(List), slice<Midpoint, List.size()>(List), compare);
+    }
+}
 
+
+template<typename ...T, typename Compare>
+auto sort(type_list<T...> List, Compare && compare) {
+
+    if constexpr (List.size() == 0 || List.size() == 1) {
+        return List;
+    }
+    else {
         constexpr auto Midpoint = List.size()/2;
         return detail::merge(slice<0,Midpoint>(List), slice<Midpoint, List.size()>(List), compare);
     }

@@ -137,6 +137,4 @@ TODO
 ====
 - make tv_pair (type-value pair) with a comparison operator<
 - zip function for type_list with value_list (yields type_list of tv_pair types)
-- list splitting at index (useful for merge-sort)
-- value_list sorting (supply comparator, default to operator<)
 - type_list sorting (supply comparator)
