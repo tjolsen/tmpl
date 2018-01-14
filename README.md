@@ -120,3 +120,13 @@ struct B{};
 tmpl_has_member(A, a)
 
 ```
+
+TODO
+====
+- Flesh out value_list to have similar capability to type_list
+    - value_list for_each, cat, operator|, set, union, set_difference, symmetric_set_difference
+- make tv_pair (type-value pair) with 
+- zip function for type_list with value_list (yields type_list of tv_pair types)
+- list splitting at index (useful for merge-sort)
+- value_list sorting (supply comparator, default to operator<)
+- type_list sorting (supply comparator)
