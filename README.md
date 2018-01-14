@@ -7,6 +7,9 @@ This is mostly done so that I have only a single codebase
 to test and maintain, especially since this tends to be a
 bug-prone part of code.
 
+Parts of the design/syntax are inspired by boost::hana, a popular
+metaprogramming library that likely is more robust than this library.
+
 Compatibility
 -------------
 This library requires C++17 features (fold expressions, constexpr if,
@@ -24,6 +27,12 @@ std::integral_constant<bool, Foo_has_bar> Baz;
 //This fails to compile with my GCC, works fine with Clang 5.0:
 std::integral_constant<bool, tmpl_has_member(Foo,bar)> BadBaz;
 ```
+
+**NOTE**: Clang 5.0.1 has a bug related to nested non-type template
+parameters of "auto" type, so it cannot be used to compile the library's
+`value_list` type. Until this is resolved, the library will only be
+built against GCC. See the clang bug page for progress: 
+https://bugs.llvm.org/show_bug.cgi?id=35655#c1
 
 Installation
 ------------
@@ -127,8 +136,8 @@ tmpl_has_member(A, a)
 TODO
 ====
 - Flesh out value_list to have similar capability to type_list
-    - value_list for_each, cat, operator|, set, union, set_difference, symmetric_set_difference
-- make tv_pair (type-value pair) with 
+    - value_list for_each, set, union, set_difference, symmetric_set_difference
+- make tv_pair (type-value pair) with a comparison operator<
 - zip function for type_list with value_list (yields type_list of tv_pair types)
 - list splitting at index (useful for merge-sort)
 - value_list sorting (supply comparator, default to operator<)

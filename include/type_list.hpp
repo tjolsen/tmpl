@@ -18,7 +18,7 @@ struct type_list
     }
 
     template<typename U>
-    static constexpr bool contains(U)
+    static constexpr bool contains(U const&)
     {
         return contains(type_list<U>{});
     }

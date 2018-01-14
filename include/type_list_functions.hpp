@@ -11,31 +11,31 @@ NAMESPACE_TMPL_OPEN
  * Basic type_list building/manipulation functions
  */
 template<typename U, typename ...T>
-auto push_back(type_list<T...>, Type<U>)
+constexpr auto push_back(type_list<T...>, Type<U>)
 {
     return type_list<T..., U>{};
 }
 
 template<typename U, typename ...T>
-auto push_front(type_list<T...>, Type<U>)
+constexpr auto push_front(type_list<T...>, Type<U>)
 {
     return type_list<U, T...>{};
 }
 
 template<typename ...T, typename ...U>
-auto cat(type_list<T...>, type_list<U...>)
+constexpr auto cat(type_list<T...>, type_list<U...>)
 {
     return type_list<T..., U...>{};
 }
 
 template<typename ...T, typename ...U>
-auto operator|(type_list<T...> LT, type_list<U...> LU)
+constexpr auto operator|(type_list<T...> LT, type_list<U...> LU)
 {
     return cat(LT, LU);
 }
 
 template<typename ...T>
-auto reverse(type_list<T...> List)
+constexpr auto reverse(type_list<T...> List)
 {
     if constexpr (List.size() == 0)
     {
@@ -61,7 +61,7 @@ constexpr T unbox(tmpl::type_list<T>)
  * Return a type_list containing the unique elements
  */
 template<typename ...T>
-auto make_set(type_list<T...> List)
+constexpr auto make_set(type_list<T...> List)
 {
     if constexpr (List.size() == 0)
     {
@@ -85,7 +85,7 @@ auto make_set(type_list<T...> List)
  * (this will also remove duplicates from the originals)
  */
 template<typename ...T, typename ...U>
-auto set_union(type_list<T...> LT, type_list<U...> LU)
+constexpr auto set_union(type_list<T...> LT, type_list<U...> LU)
 {
     return make_set(LT | LU);
 }
@@ -94,7 +94,7 @@ auto set_union(type_list<T...> LT, type_list<U...> LU)
  * Return type_list containing elements of LT that are not in LU
  */
 template<typename ...T, typename ...U>
-auto set_difference(type_list<T...> LT, type_list<U...> LU)
+constexpr auto set_difference(type_list<T...> LT, type_list<U...> LU)
 {
 
     auto F = [](auto X) {
@@ -115,7 +115,7 @@ auto set_difference(type_list<T...> LT, type_list<U...> LU)
  * Symmetric set difference of two sets (type_lists)
  */
 template<typename ...T, typename ...U>
-auto symmetric_difference(type_list<T...> LT, type_list<U...> LU)
+constexpr auto symmetric_difference(type_list<T...> LT, type_list<U...> LU)
 {
 
     return set_union(set_difference(LT, LU), set_difference(LU, LT));
@@ -127,7 +127,7 @@ auto symmetric_difference(type_list<T...> LT, type_list<U...> LU)
  * in the type_list
  */
 template<typename ...T>
-auto as_tuple(type_list<T...>)
+constexpr auto as_tuple(type_list<T...>)
 {
     return std::tuple < T...>{};
 }
@@ -142,7 +142,7 @@ constexpr void for_each(type_list<T...>, F &&f)
 }
 
 template<typename ...T, typename ...V>
-auto zip(type_list<T...>, type_list<V...>) {
+constexpr auto zip(type_list<T...>, type_list<V...>) {
     return (type_list<type_list<T,V>>{} | ... | type_list<>{});
 }
 

@@ -16,6 +16,7 @@ set(SOURCE_FILES
         ${CMAKE_SOURCE_DIR}/include/type_list.hpp
         ${CMAKE_SOURCE_DIR}/include/type_list_functions.hpp
         ${CMAKE_SOURCE_DIR}/include/value_list.hpp
+        ${CMAKE_SOURCE_DIR}/include/value_list_functions.hpp
         )
 
 add_library(tmpl INTERFACE)
