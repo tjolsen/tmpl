@@ -88,7 +88,7 @@ NAMESPACE_TMPL_CLOSE
  * Macro to test whether a type TYPE has a public typedef TYPEDEF_NAME
  */
 #define tmpl_has_typedef(TYPE, TYPEDEF_NAME) \
-    tmpl::is_valid([](auto &&x) constexpr ->decltype((void)(std::declval<typename std::decay_t<decltype(x)>::value_type>())) \
+    tmpl::is_valid([](auto &&x) constexpr ->decltype((void)(std::declval<typename std::decay_t<decltype(x)>::TYPEDEF_NAME>())) \
     {})(tmpl::type_list<TYPE>{})
 
 /**
