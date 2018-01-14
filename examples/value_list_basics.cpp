@@ -17,7 +17,31 @@ int main() {
 
     constexpr auto tup = tmpl::as_tuple(List);
 
+    //Print a tuple created from a list
+    std::cout << "List from tuple:\n";
     tmpl::for_constexpr<0,List.size()>([&tup](auto I) {
-        std::cout << std::get<I>(tup) << std::endl;
+        std::cout << std::get<I>(tup) << " ";
     });
+    std::cout << std::endl << std::endl;
+
+    auto sliced_list = tmpl::slice<1,4>(List);
+
+    //print a sliced value_list
+    std::cout << "Sliced list:\n";
+    tmpl::for_each(sliced_list, [](auto &&x) {
+        std::cout << x << " ";
+    });
+    std::cout << std::endl << std::endl;
+
+
+    auto LL = List | List;
+    auto sorted_LL = tmpl::sort(LL, [](auto &&a, auto &&b) {return a < b; });
+
+    std::integral_constant<int, tmpl::unbox(sorted_LL.head())> Iconst;
+
+    std::cout << "Sorted list:\n";
+    tmpl::for_each(sorted_LL, [](auto &&x) {
+        std::cout << x << " ";
+    });
+    std::cout << std::endl << std::endl;
 }

@@ -104,8 +104,8 @@ constexpr auto set_difference(type_list<T...> LT, type_list<U...> LU)
         {
             return type_list<>{};
         } else {
-        return X;
-    }
+            return X;
+        }
     };
 
     return (type_list<>{} | ... | F(type_list<T>{}));
@@ -144,6 +144,39 @@ constexpr void for_each(type_list<T...>, F &&f)
 template<typename ...T, typename ...V>
 constexpr auto zip(type_list<T...>, type_list<V...>) {
     return (type_list<type_list<T,V>>{} | ... | type_list<>{});
+}
+
+
+namespace detail {
+
+template<int Start, int End, typename ...V, int ...I>
+auto slice_helper(type_list<V...>, std::integer_sequence<int, I...>)
+{
+    auto f = [](auto &&x, auto &&idx) {
+        if constexpr ((Start <= idx) && (idx < End))
+        {
+            return x;
+        }
+        else {
+        return type_list<>{};
+    }
+    };
+
+    return (f(type_list<V>{}, std::integral_constant<int,I>{}) | ... | type_list<>{});
+}
+
+}//end namespace detail
+
+/**
+ * Return a slice from a type_list. Returns
+ * a list of the elements between Start <= I < End.
+ */
+template<int Start, int End, typename ...V>
+auto slice(type_list<V...> List)
+{
+    static_assert((Start >=0) && (Start <= End) && End<=List.size(), "tmpl::slice(type_list): Invalid Bounds");
+    return detail::slice_helper<Start,End>(List, std::make_integer_sequence<int, List.size()>{});
+
 }
 
 NAMESPACE_TMPL_CLOSE

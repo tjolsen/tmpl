@@ -27,11 +27,6 @@ struct value_pair{
     static constexpr auto second() { return Second; }
 };
 
-template<auto ...A, auto ...B>
-auto zip(tmpl::value_list<A...> LA, tmpl::value_list<B...> LB) {
-    static_assert(LA.size() == LB.size(), "Must be equal length");
-    return (tmpl::type_list<value_pair<A,B>>{} | ... | tmpl::type_list<>{});
-};
 
 template<auto ...A, auto ...B>
 auto operator|(tmpl::value_list<A...>, tmpl::value_list<B...>)
@@ -66,7 +61,7 @@ int main()
     tmpl::for_each(zipped,
     [](auto &&xT){
         auto x = tmpl::unbox(xT);
-        cout << "(" << x.first() << ", " << x.second() << ")" << endl;
+        cout << "(" << tmpl::unbox(x.head()) << ", " << tmpl::unbox(x.tail()) << ")" << endl;
     });
 
 }

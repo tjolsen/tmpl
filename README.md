@@ -1,7 +1,7 @@
 TMPL
 ====
 
-TMPL is a C++17 metaprogramming library that will eventually
+TMPL ("temple") is a C++17 metaprogramming library that will eventually
 replace the metaprogramming facilities in my other projects.
 This is mostly done so that I have only a single codebase
 to test and maintain, especially since this tends to be a
@@ -28,7 +28,7 @@ std::integral_constant<bool, Foo_has_bar> Baz;
 std::integral_constant<bool, tmpl_has_member(Foo,bar)> BadBaz;
 ```
 
-**NOTE**: Clang 5.0.1 has a bug related to nested non-type template
+**NOTE/UPDATE**: Clang 5.0.1 has a bug related to nested non-type template
 parameters of "auto" type, so it cannot be used to compile the library's
 `value_list` type. Until this is resolved, the library will only be
 built against GCC. See the clang bug page for progress: 
@@ -135,8 +135,6 @@ tmpl_has_member(A, a)
 
 TODO
 ====
-- Flesh out value_list to have similar capability to type_list
-    - value_list for_each, set, union, set_difference, symmetric_set_difference
 - make tv_pair (type-value pair) with a comparison operator<
 - zip function for type_list with value_list (yields type_list of tv_pair types)
 - list splitting at index (useful for merge-sort)

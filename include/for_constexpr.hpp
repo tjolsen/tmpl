@@ -9,7 +9,7 @@ NAMESPACE_TMPL_OPEN
 
 namespace detail {
 template<int ...I, int S, typename F>
-void for_constexpr_impl(std::integer_sequence<int, I...>, std::integral_constant<int, S>, F &&f)
+constexpr void for_constexpr_impl(std::integer_sequence<int, I...>, std::integral_constant<int, S>, F &&f)
 {
     (f(std::integral_constant < int, I + S > {}), ...);
 }
@@ -23,7 +23,7 @@ void for_constexpr_impl(std::integer_sequence<int, I...>, std::integral_constant
  * Start <= I < End (i.e., the typical use-case for a for-loop).
  */
 template<int Start, int End, typename F>
-void for_constexpr(F &&f)
+constexpr void for_constexpr(F &&f)
 {
 
     static_assert(std::is_same_v < void, std::result_of_t < F(std::integral_constant < int, Start > ) >> ,

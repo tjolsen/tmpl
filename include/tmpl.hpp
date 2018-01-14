@@ -5,6 +5,7 @@
 
 #include "concepts.hpp"
 #include "for_constexpr.hpp"
+#include "list_sort.hpp"
 #include "type_list_functions.hpp"
 #include "type_collections.hpp"
 #include "type_list.hpp"
