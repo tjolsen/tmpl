@@ -106,7 +106,10 @@ an "is_valid" function to test whether a code section is valid.
 Using this, other concepts can be built for more special-purpose constraints.
 
 Since they are among the most common concepts, I have included macros
-that test for the presence of (public) class members and typedefs.
+that test for the presence of (public) class members, typedefs,
+nonstatic member functions, and static member functions.
+See examples/concepts.cpp for usage and for an example of creating
+a custom concept.
 
 ```C++
 struct A {
