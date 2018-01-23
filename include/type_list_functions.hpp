@@ -179,6 +179,41 @@ auto slice(type_list<V...> List)
 
 }
 
+
+/**
+ * Select the elements of a value_list for which a
+ * user-supplied unary predicate returns true
+ */
+template<typename ...T, typename F>
+constexpr auto select_if(type_list<T...>, F predicate) {
+
+    constexpr auto f = [predicate](auto x) {
+        if constexpr ((bool)predicate(std::decay_t<decltype(x)>{})) {
+            return x;
+        }
+        else {
+            return type_list<>{};
+        }
+    };
+
+    return (f(type_list<T>{}) | ... | type_list<>{});
+}
+
+
+/**
+ * Return the index of a type within a type list.
+ * Return the length of the type list if the type is not contained.
+ */
+template<typename ...T, typename V>
+constexpr auto find(type_list<T...> List, type_list<V> query) {
+    if constexpr (List.size() > 1) {
+        return (List.head() == query) ? 0 : 1+find(List.tail(), query);
+    } else {
+        return List == query ? 0 : 1;
+    }
+
+}
+
 NAMESPACE_TMPL_CLOSE
 
 

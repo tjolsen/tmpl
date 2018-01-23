@@ -23,6 +23,7 @@ struct type_list
         return contains(type_list<U>{});
     }
 
+
     static constexpr auto head()
     {
         return head_impl(type_list<T...>{});
@@ -47,6 +48,13 @@ private:
         return type_list<UU...>{};
     }
 };
+
+//Compare two type lists
+template<typename ...T, typename ...U>
+static constexpr bool operator==(type_list<T...>, type_list<U...>) {
+    return (std::is_same_v<T,U> && ...);
+}
+
 
 template<typename T>
 using Type = type_list<T>;

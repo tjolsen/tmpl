@@ -28,6 +28,7 @@ set(SOURCE_FILES
         ${CMAKE_SOURCE_DIR}/include/detail/concepts_detail.hpp
         ${CMAKE_SOURCE_DIR}/include/detail/list_sort_detail.hpp
         ${CMAKE_SOURCE_DIR}/include/detail/value_list_creation_detail.hpp
+        ${CMAKE_SOURCE_DIR}/include/detail/value_list_function_detail.hpp
         )
 
 add_library(tmpl INTERFACE)

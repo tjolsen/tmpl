@@ -8,6 +8,7 @@
 #include "tmpl_common.hpp"
 #include "value_list.hpp"
 #include "type_list.hpp"
+#include "detail/value_list_function_detail.hpp"
 
 #include <utility>
 #include <tuple>
@@ -163,26 +164,6 @@ constexpr auto zip(value_list<V...>, value_list<U...>)
 }
 
 
-namespace detail {
-
-template<int Start, int End, auto ...V, int ...I>
-auto slice_helper(value_list<V...>, std::integer_sequence<int, I...>)
-{
-    auto f = [](auto &&x, auto &&idx) {
-        if constexpr ((Start <= idx) && (idx < End))
-        {
-            return x;
-        }
-        else {
-        return value_list<>{};
-    }
-    };
-
-    return (f(value_list<V>{}, std::integral_constant<int,I>{}) | ... | value_list<>{});
-}
-
-}//end namespace detail
-
 /**
  * Return a slice from a value_list. Returns
  * a list of the elements between Start <= I < End.
@@ -205,6 +186,26 @@ auto transform(value_list<V...>, F &&f) {
     return (value_list<f(V)>{} | ... | value_list<>{});
 }
 
+
+
+/**
+ * Select the elements of a value_list for which a
+ * user-supplied unary predicate returns true
+ */
+template<auto ...V, typename F>
+constexpr auto select_if(value_list<V...>, F && predicate) {
+
+    auto f = [&predicate](auto &&x) {
+        if constexpr ((bool)predicate(x)) {
+            return value_list<x>{};
+        }
+        else {
+            return value_list<>{};
+        }
+    };
+
+    return (f(value_list<V>{}) | ... | value_list<>{});
+}
 
 
 ///@{

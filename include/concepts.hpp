@@ -16,6 +16,23 @@
 
 NAMESPACE_TMPL_OPEN
 
+///@{
+/**
+ * Trait to test whether a type is a type_list
+ */
+template<typename ...T>
+struct is_type_list : std::false_type
+{
+};
+
+template<typename ...T>
+struct is_type_list<type_list<T...>> : std::true_type
+{
+};
+
+template<typename ...T>
+inline constexpr bool is_type_list_v = is_type_list<T...>::value;
+///@}
 
 
 /**
@@ -34,27 +51,15 @@ NAMESPACE_TMPL_OPEN
  * \endcode
  */
 template<typename F>
-constexpr auto is_valid(F f)
+constexpr auto is_valid(F &&f)
 {
     return [](auto &&x) {
-        return detail::is_valid_helper<F, decltype(unbox(x))>::value;
+        static_assert(is_type_list_v<std::decay_t<decltype(x)> >
+                      && (std::decay_t<decltype(x)>::size() == 1),
+                      "Must pass a type_list<T> into function returned from tmpl::is_valid");
+        return detail::is_valid_helper<F, std::decay_t<decltype(unbox(x))>>::value;
     };
 }
-
-
-///@{
-/**
- * Trait to test whether a type is a type_list
- */
-template<typename ...T>
-struct is_type_list : std::false_type {};
-
-template<typename ...T>
-struct is_type_list<type_list<T...>> : std::true_type {};
-
-template<typename ...T>
-inline bool is_type_list_v = is_type_list<T...>::value;
-///@}
 
 
 ///@{
@@ -62,10 +67,14 @@ inline bool is_type_list_v = is_type_list<T...>::value;
  * Trait to test whether a type is a value_list
  */
 template<typename T>
-struct is_value_list : std::false_type {};
+struct is_value_list : std::false_type
+{
+};
 
 template<auto ...V>
-struct is_value_list<value_list<V...>> : std::true_type {};
+struct is_value_list<value_list<V...>> : std::true_type
+{
+};
 
 template<typename T>
 constexpr inline bool is_value_list_v = is_value_list<T>::value;
@@ -82,7 +91,6 @@ NAMESPACE_TMPL_CLOSE
  */
 #define tmpl_has_member(TYPE, MEMBER) \
     tmpl::is_valid([](auto &&x) constexpr -> decltype((void)x.MEMBER) {})(tmpl::type_list<TYPE>{})
-
 
 /**
  * Macro to test whether a type TYPE has a public typedef TYPEDEF_NAME
@@ -111,7 +119,6 @@ NAMESPACE_TMPL_CLOSE
                  >                                                   \
             >                                                        \
     >{})(tmpl::type_list<TYPE>{})
-
 
 
 #endif //TMPL_CONCEPTS_HPP
