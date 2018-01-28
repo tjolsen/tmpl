@@ -133,6 +133,12 @@ constexpr auto as_tuple(type_list<T...>)
 }
 
 /**
+ * The type of the tuple returned by as_tuple
+ */
+template<typename TL>
+using as_tuple_t = std::decay_t<decltype(as_tuple(TL{}))>;
+
+/**
  * Basic for_each loop over elements of the type list
  */
 template<typename ...T, typename F>
@@ -213,6 +219,12 @@ constexpr auto find(type_list<T...> List, type_list<V> query) {
     }
 
 }
+
+/**
+ * Get the type at the head of the type_list
+ */
+template<typename TL>
+using head_type_t = std::decay_t<decltype(unbox(TL{}.head()))>;
 
 NAMESPACE_TMPL_CLOSE
 
