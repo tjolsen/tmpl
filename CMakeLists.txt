@@ -23,12 +23,15 @@ set(SOURCE_FILES
         ${CMAKE_SOURCE_DIR}/include/value_list_functions.hpp
         ${CMAKE_SOURCE_DIR}/include/value_list_math.hpp
 
+        ${CMAKE_SOURCE_DIR}/include/select_if.hpp
+
         ${CMAKE_SOURCE_DIR}/include/utils/int_pow.hpp
 
         ${CMAKE_SOURCE_DIR}/include/detail/concepts_detail.hpp
         ${CMAKE_SOURCE_DIR}/include/detail/list_sort_detail.hpp
         ${CMAKE_SOURCE_DIR}/include/detail/value_list_creation_detail.hpp
         ${CMAKE_SOURCE_DIR}/include/detail/value_list_function_detail.hpp
+        ${CMAKE_SOURCE_DIR}/include/detail/select_if_detail.hpp
         )
 
 add_library(tmpl INTERFACE)

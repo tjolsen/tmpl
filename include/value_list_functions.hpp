@@ -182,30 +182,13 @@ auto slice(value_list<V...> List)
  * Similar to std::transform.
  */
 template<auto ...V, typename F>
-auto transform(value_list<V...>, F &&f) {
+constexpr auto transform(value_list<V...>, F &&f) {
     return (value_list<f(V)>{} | ... | value_list<>{});
 }
 
 
 
-/**
- * Select the elements of a value_list for which a
- * user-supplied unary predicate returns true
- */
-template<auto ...V, typename F>
-constexpr auto select_if(value_list<V...>, F && predicate) {
 
-    auto f = [&predicate](auto &&x) {
-        if constexpr ((bool)predicate(x)) {
-            return value_list<x>{};
-        }
-        else {
-            return value_list<>{};
-        }
-    };
-
-    return (f(value_list<V>{}) | ... | value_list<>{});
-}
 
 
 ///@{

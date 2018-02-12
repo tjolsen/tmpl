@@ -44,4 +44,14 @@ int main() {
         std::cout << x << ' ';
     });
     std::cout << std::endl << std::endl;
+
+
+    std::cout << "Evens: \n";
+    tmpl::for_each(tmpl::select_if(List, [](auto x){ return x%2 == 0; }),
+                   [](auto &&x) {std::cout << x << " ";});
+    std::cout << "\n";
+
+    std::cout << "Odds: \n";
+    tmpl::for_each(tmpl::select_if(List, [](auto x){ return x%2 != 0; }),
+                   [](auto &&x) {std::cout << x << " ";});
 }
