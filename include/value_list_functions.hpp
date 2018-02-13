@@ -182,13 +182,9 @@ auto slice(value_list<V...> List)
  * Similar to std::transform.
  */
 template<auto ...V, typename F>
-constexpr auto transform(value_list<V...>, F &&f) {
+constexpr auto transform(value_list<V...>, F f) {
     return (value_list<f(V)>{} | ... | value_list<>{});
 }
-
-
-
-
 
 
 ///@{

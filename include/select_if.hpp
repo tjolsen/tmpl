@@ -16,18 +16,18 @@ NAMESPACE_TMPL_OPEN
  * user-supplied unary predicate returns true
  */
 template<auto ...V, typename F>
-constexpr auto select_if(value_list<V...>, F &&predicate) {
+constexpr auto select_if(value_list<V...>, F predicate) {
 
-    constexpr auto select_filter = transform(value_list<V...>{}, std::forward<F>(predicate));
+    constexpr auto select_filter = transform(value_list<V...>{}, predicate);
 
     constexpr auto value_with_filter = zip(value_list<V...>{}, select_filter);
 
     auto f = [](auto &&x) {
         constexpr auto val_bool = decltype(x){};
-        constexpr auto val = val_bool.head();
         constexpr auto filterBool = val_bool.tail();
 
         if constexpr(unbox(filterBool)) {
+            constexpr auto val = val_bool.head();
             return value_list<unbox(val)>{};
         }
         else {

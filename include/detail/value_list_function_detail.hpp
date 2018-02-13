@@ -12,7 +12,8 @@ NAMESPACE_TMPL_DETAIL_OPEN
 template<int Start, int End, auto ...V, int ...I>
 auto slice_helper(value_list<V...>, std::integer_sequence<int, I...>)
 {
-    auto f = [](auto &&x, auto &&idx) {
+    auto f = [](auto &&x, auto c_idx) {
+        constexpr auto idx = decltype(c_idx)::value;
         if constexpr ((Start <= idx) && (idx < End))
         {
             return x;

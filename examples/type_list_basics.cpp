@@ -9,7 +9,7 @@
 int main() {
 
     auto L1 = tmpl::type_list<int, double>{};
-    auto L2 = tmpl::type_list<char, float>{};
+    //auto L2 = tmpl::type_list<char, float>{};
 
     //type_list concatenation
     auto L1L1 = L1 | L1; //can also use tmpl::cat(L1, L1)

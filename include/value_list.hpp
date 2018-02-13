@@ -12,7 +12,19 @@ NAMESPACE_TMPL_OPEN
 template<auto ...V>
 struct value_list
 {
+private:
 
+    template<auto ...U>
+    struct value_list_{};
+
+    template<auto U, auto ...Tail>
+    struct value_list_<U, Tail...> {
+        constexpr static auto head() { return value_list<U>{}; }
+        constexpr static auto tail() { return value_list<Tail...>{}; }
+    };
+
+
+public:
     static constexpr int size() { return sizeof...(V); }
 
     template<auto U>
@@ -27,26 +39,12 @@ struct value_list
 
     static constexpr auto head()
     {
-        return head_impl(value_list<V...>{});
+        return value_list_<V...>::head();
     }
 
     static constexpr auto tail()
     {
-        return tail_impl(value_list<V...>{});
-    }
-
-private:
-
-    template<auto U, auto ...UU>
-    static constexpr auto head_impl(value_list<U, UU...>)
-    {
-        return value_list<U>{};
-    }
-
-    template<auto U, auto ...UU>
-    static constexpr auto tail_impl(value_list<U, UU...>)
-    {
-        return value_list<UU...>{};
+        return value_list_<V...>::tail();
     }
 
 };

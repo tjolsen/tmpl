@@ -27,12 +27,10 @@ std::integral_constant<bool, Foo_has_bar> Baz;
 //This fails to compile with my GCC, works fine with Clang 5.0:
 std::integral_constant<bool, tmpl_has_member(Foo,bar)> BadBaz;
 ```
+**UPDATE 2/13/18:** Thanks to some wonderful input from @manfredd,
+the value_list has been re-worked and the library now compiles under
+clang 5.0 and 6.0!
 
-**NOTE/UPDATE**: Clang 5.0.1 has a bug related to nested non-type template
-parameters of "auto" type, so it cannot be used to compile the library's
-`value_list` type. Until this is resolved, the library will only be
-built against GCC. See the clang bug page for progress: 
-https://bugs.llvm.org/show_bug.cgi?id=35655#c1
 
 Installation
 ------------

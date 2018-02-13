@@ -37,8 +37,6 @@ int main() {
     auto LL = List | List;
     auto sorted_LL = tmpl::sort(LL, [](auto &&a, auto &&b) {return a < b; });
 
-    std::integral_constant<int, tmpl::unbox(sorted_LL.head())> Iconst;
-
     std::cout << "Sorted list:\n";
     tmpl::for_each(sorted_LL, [](auto &&x) {
         std::cout << x << ' ';

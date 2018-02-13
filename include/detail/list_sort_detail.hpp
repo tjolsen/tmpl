@@ -17,7 +17,7 @@
 NAMESPACE_TMPL_DETAIL_OPEN
 
 template<auto ...V, auto ...U, typename Compare>
-constexpr auto merge(value_list<V...> A, value_list<U...> B, Compare && compare) {
+constexpr auto merge(value_list<V...> A, value_list<U...> B, Compare compare) {
 
     if constexpr (A.size() == 0 && B.size() == 0) {
         return value_list<>{};
@@ -34,16 +34,16 @@ constexpr auto merge(value_list<V...> A, value_list<U...> B, Compare && compare)
         auto Bhead = B.head();
 
         if constexpr (compare(Ahead,Bhead)) {
-            return Ahead | merge(A.tail(), B, std::forward<Compare>(compare));
+            return Ahead | merge(A.tail(), B, compare);
         } else {
-            return Bhead | merge(A, B.tail(), std::forward<Compare>(compare));
+            return Bhead | merge(A, B.tail(), compare);
         }
     }
 }
 
 
 template<typename ...V, typename ...U, typename Compare>
-constexpr auto merge(type_list<V...> A, type_list<U...> B, Compare && compare) {
+constexpr auto merge(type_list<V...> A, type_list<U...> B, Compare compare) {
 
     if constexpr (A.size() == 0 && B.size() == 0) {
         return type_list<>{};
@@ -60,9 +60,9 @@ constexpr auto merge(type_list<V...> A, type_list<U...> B, Compare && compare) {
         auto Bhead = B.head();
 
         if constexpr (compare(Ahead,Bhead)) {
-            return Ahead | merge(A.tail(), B, std::forward<Compare>(compare));
+            return Ahead | merge(A.tail(), B, compare);
         } else {
-            return Bhead | merge(A, B.tail(), std::forward<Compare>(compare));
+            return Bhead | merge(A, B.tail(), compare);
         }
     }
 }
