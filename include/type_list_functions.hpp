@@ -188,6 +188,19 @@ auto slice(type_list<V...> List)
 
 
 /**
+ * Transform a type_list into a new type_list.
+ * Predicate, in this case, is a function that takes
+ * a Type<T> (aka type_list<T>) and returns a type_list<U...>.
+ * The results are concatenated together using operator| and
+ * a fold expression.
+ */
+template<typename ...T, typename F>
+constexpr auto transform(type_list<T...>, F predicate) {
+    return (predicate(Type<T>) | ... | type_list<>{});
+};
+
+
+/**
  * Select the elements of a value_list for which a
  * user-supplied unary predicate returns true
  */
