@@ -11,34 +11,28 @@ NAMESPACE_TMPL_OPEN
  * Basic type_list building/manipulation functions
  */
 template<typename U, typename ...T>
-constexpr auto push_back(type_list<T...>, Type<U>)
-{
+constexpr auto push_back(type_list<T...>, Type<U>) {
     return type_list<T..., U>{};
 }
 
 template<typename U, typename ...T>
-constexpr auto push_front(type_list<T...>, Type<U>)
-{
+constexpr auto push_front(type_list<T...>, Type<U>) {
     return type_list<U, T...>{};
 }
 
 template<typename ...T, typename ...U>
-constexpr auto cat(type_list<T...>, type_list<U...>)
-{
+constexpr auto cat(type_list<T...>, type_list<U...>) {
     return type_list<T..., U...>{};
 }
 
 template<typename ...T, typename ...U>
-constexpr auto operator|(type_list<T...> LT, type_list<U...> LU)
-{
+constexpr auto operator|(type_list<T...> LT, type_list<U...> LU) {
     return cat(LT, LU);
 }
 
 template<typename ...T>
-constexpr auto reverse(type_list<T...> List)
-{
-    if constexpr (List.size() == 0)
-    {
+constexpr auto reverse(type_list<T...> List) {
+    if constexpr (List.size() == 0) {
         return List;
     } else {
         return push_back(reverse(List.tail()), List.head());
@@ -51,8 +45,7 @@ constexpr auto reverse(type_list<T...> List)
  * constexpr default-constructed value of the contained type.
  */
 template<typename T>
-constexpr T unbox(tmpl::type_list<T>)
-{
+constexpr T unbox(tmpl::type_list<T>) {
     return T{};
 }
 
@@ -61,17 +54,13 @@ constexpr T unbox(tmpl::type_list<T>)
  * Return a type_list containing the unique elements
  */
 template<typename ...T>
-constexpr auto make_set(type_list<T...> List)
-{
-    if constexpr (List.size() == 0)
-    {
+constexpr auto make_set(type_list<T...> List) {
+    if constexpr (List.size() == 0) {
         return List;
-    }
-    else {
+    } else {
         auto tail_set = make_set(List.tail());
 
-        if constexpr (!tail_set.contains(List.head()))
-        {
+        if constexpr (!tail_set.contains(List.head())) {
             return push_front(tail_set, List.head());
         } else {
             return tail_set;
@@ -85,8 +74,7 @@ constexpr auto make_set(type_list<T...> List)
  * (this will also remove duplicates from the originals)
  */
 template<typename ...T, typename ...U>
-constexpr auto set_union(type_list<T...> LT, type_list<U...> LU)
-{
+constexpr auto set_union(type_list<T...> LT, type_list<U...> LU) {
     return make_set(LT | LU);
 }
 
@@ -94,14 +82,12 @@ constexpr auto set_union(type_list<T...> LT, type_list<U...> LU)
  * Return type_list containing elements of LT that are not in LU
  */
 template<typename ...T, typename ...U>
-constexpr auto set_difference(type_list<T...> LT, type_list<U...> LU)
-{
+constexpr auto set_difference(type_list<T...> LT, type_list<U...> LU) {
 
     auto F = [](auto X) {
 
         //(LU.contains(decltype(X){})) {
-        if constexpr (type_list<U...>::contains(decltype(X){}))
-        {
+        if constexpr (type_list<U...>::contains(decltype(X){})) {
             return type_list<>{};
         } else {
             return X;
@@ -115,8 +101,7 @@ constexpr auto set_difference(type_list<T...> LT, type_list<U...> LU)
  * Symmetric set difference of two sets (type_lists)
  */
 template<typename ...T, typename ...U>
-constexpr auto symmetric_difference(type_list<T...> LT, type_list<U...> LU)
-{
+constexpr auto symmetric_difference(type_list<T...> LT, type_list<U...> LU) {
 
     return set_union(set_difference(LT, LU), set_difference(LU, LT));
 
@@ -127,49 +112,44 @@ constexpr auto symmetric_difference(type_list<T...> LT, type_list<U...> LU)
  * in the type_list
  */
 template<typename ...T>
-constexpr auto as_tuple(type_list<T...>)
-{
-    return std::tuple < T...>{};
+constexpr auto as_tuple(type_list<T...>) {
+    return std::tuple<T...>{};
 }
 
 /**
  * The type of the tuple returned by as_tuple
  */
 template<typename TL>
-using as_tuple_t = std::decay_t<decltype(as_tuple(TL{}))>;
+using as_tuple_t = std::enable_if_t<is_type_list_v<TL>, std::decay_t<decltype(as_tuple(TL{}))>>;
 
 /**
  * Basic for_each loop over elements of the type list
  */
 template<typename ...T, typename F>
-constexpr void for_each(type_list<T...>, F &&f)
-{
+constexpr void for_each(type_list<T...>, F &&f) {
     (f(type_list<T>{}), ...);
 }
 
 template<typename ...T, typename ...V>
 constexpr auto zip(type_list<T...>, type_list<V...>) {
-    return (type_list<type_list<T,V>>{} | ... | type_list<>{});
+    return (type_list<type_list<T, V>>{} | ... | type_list<>{});
 }
 
 
 namespace detail {
 
 template<int Start, int End, typename ...V, int ...I>
-auto slice_helper(type_list<V...>, std::integer_sequence<int, I...>)
-{
+auto slice_helper(type_list<V...>, std::integer_sequence<int, I...>) {
     auto f = [](auto &&x, auto c_idx) {
         constexpr auto idx = decltype(c_idx)::value;
-        if constexpr ((Start <= idx) && (idx < End))
-        {
+        if constexpr ((Start <= idx) && (idx < End)) {
             return x;
+        } else {
+            return type_list<>{};
         }
-        else {
-        return type_list<>{};
-    }
     };
 
-    return (f(type_list<V>{}, std::integral_constant<int,I>{}) | ... | type_list<>{});
+    return (f(type_list<V>{}, std::integral_constant<int, I>{}) | ... | type_list<>{});
 }
 
 }//end namespace detail
@@ -179,10 +159,9 @@ auto slice_helper(type_list<V...>, std::integer_sequence<int, I...>)
  * a list of the elements between Start <= I < End.
  */
 template<int Start, int End, typename ...V>
-auto slice(type_list<V...> List)
-{
-    static_assert((Start >=0) && (Start <= End) && End<=List.size(), "tmpl::slice(type_list): Invalid Bounds");
-    return detail::slice_helper<Start,End>(List, std::make_integer_sequence<int, List.size()>{});
+auto slice(type_list<V...> List) {
+    static_assert((Start >= 0) && (Start <= End) && End <= List.size(), "tmpl::slice(type_list): Invalid Bounds");
+    return detail::slice_helper<Start, End>(List, std::make_integer_sequence<int, List.size()>{});
 
 }
 
@@ -196,7 +175,7 @@ auto slice(type_list<V...> List)
  */
 template<typename ...T, typename F>
 constexpr auto transform(type_list<T...>, F predicate) {
-    static_assert((is_type_list_v<std::result_of_t<F(Type<T>)>> && ... ), "predicate must return a type_list");
+    static_assert((is_type_list_v<std::result_of_t<F(Type<T>)>> && ...), "predicate must return a type_list");
     return (predicate(Type<T>{}) | ... | type_list<>{});
 };
 
@@ -209,10 +188,9 @@ template<typename ...T, typename F>
 constexpr auto select_if(type_list<T...>, F predicate) {
 
     constexpr auto f = [predicate](auto x) {
-        if constexpr ((bool)predicate(std::decay_t<decltype(x)>{})) {
+        if constexpr ((bool) predicate(std::decay_t<decltype(x)>{})) {
             return x;
-        }
-        else {
+        } else {
             return type_list<>{};
         }
     };
@@ -228,7 +206,7 @@ constexpr auto select_if(type_list<T...>, F predicate) {
 template<typename ...T, typename V>
 constexpr auto find(type_list<T...> List, type_list<V> query) {
     if constexpr (List.size() > 1) {
-        return (List.head() == query) ? 0 : 1+find(List.tail(), query);
+        return (List.head() == query) ? 0 : 1 + find(List.tail(), query);
     } else {
         return List == query ? 0 : 1;
     }
