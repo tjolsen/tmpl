@@ -59,6 +59,25 @@ static constexpr bool operator==(type_list<T...>, type_list<U...>) {
 template<typename T>
 using Type = type_list<T>;
 
+
+///@{
+/**
+ * Trait to test whether a type is a type_list
+ */
+template<typename T>
+struct is_type_list : std::false_type
+{
+};
+
+template<typename ...T>
+struct is_type_list<type_list<T...>> : std::true_type
+{
+};
+
+template<typename T>
+inline constexpr bool is_type_list_v = is_type_list<T>::value;
+///@}
+
 NAMESPACE_TMPL_CLOSE
 
 #endif

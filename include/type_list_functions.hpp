@@ -196,7 +196,8 @@ auto slice(type_list<V...> List)
  */
 template<typename ...T, typename F>
 constexpr auto transform(type_list<T...>, F predicate) {
-    return (predicate(Type<T>) | ... | type_list<>{});
+    static_assert((is_type_list_v<std::result_of_t<F(Type<T>)>> && ... ), "predicate must return a type_list");
+    return (predicate(Type<T>{}) | ... | type_list<>{});
 };
 
 
