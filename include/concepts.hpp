@@ -41,7 +41,7 @@ constexpr auto is_valid(F &&f)
         static_assert(is_type_list_v<std::decay_t<decltype(x)> >
                       && (std::decay_t<decltype(x)>::size() == 1),
                       "Must pass a type_list<T> into function returned from tmpl::is_valid");
-        return detail::is_valid_helper<F, std::decay_t<decltype(unbox(x))>>::value;
+        return detail::is_valid_helper<F, tmpl::head_type_t<decltype(x)>>::value;
     };
 }
 
