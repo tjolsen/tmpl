@@ -131,6 +131,36 @@ tmpl_has_member(A, a)
 
 ```
 
+Macro Citizenship
+=================
+Since one of the major barriers to dependency management in C++ is the presence
+of macros, this section aims to list the macros defined and used by the library.
+
+Convenience Macros
+------------------
+
+- `NAMESPACE_TMPL_OPEN`: identical to `namespace tmpl {`, used to prevent editors
+  from automatically reformatting and generating whitespace-only commits 
+  based on different style preferences
+- `NAMESPACE_TMPL_CLOSE`: the closing tag, `}`
+
+Function-like Macros
+--------------------
+The following macros are intended to be used by the user like functions,
+but they must be macros due to C++'s inability to provide a "mixin" feature
+such as the one provided in the D language.
+
+Provided by the Concepts module:
+- `tmpl_has_member(TYPE,MEMBER)`: check if type `TYPE` has a member variable `MEMBER` without triggering a compilation error
+- `tmpl_has_typedef(TYPE,TYPEDEF)`: check if `typename TYPE::TYPEDEF` is well-formed without triggering a compilation error
+- `tmpl_has_nonstatic_member_function(TYPE,MEMBER)`: check if `TYPE` has a member function named `MEMBER` that
+  *is not* a static member function, without triggering a compilation error. No checking of the function signature
+  is currently done.
+- `tmpl_has_static_member_function(TYPE,MEMBER)`: check if `TYPE` has a member function named `MEMBER` that
+  *is* a static member function, without triggering a compilation error. No checking of the function signature
+  is done.
+
+
 TODO
 ====
 - more concepts!
