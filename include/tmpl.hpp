@@ -8,6 +8,8 @@
 #include "list_sort.hpp"
 #include "select_if.hpp"
 
+#include "tuple_utils.hpp"
+
 #include "type_list.hpp"
 #include "type_list_creation.hpp"
 #include "type_list_functions.hpp"

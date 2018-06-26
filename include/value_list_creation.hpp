@@ -48,7 +48,7 @@ constexpr auto iterate_value() {
  * @tparam Start Starting value (default = 0)
  */
 template<int N, int Start = 0>
-auto arithmetic_sequence() {
+constexpr auto arithmetic_sequence() {
 
     static_assert(N >= 0, "Must specify a non-negative sequence length");
 

@@ -13,6 +13,7 @@ set(SOURCE_FILES
         ${CMAKE_SOURCE_DIR}/include/concepts.hpp
         ${CMAKE_SOURCE_DIR}/include/for_constexpr.hpp
         ${CMAKE_SOURCE_DIR}/include/list_sort.hpp
+        ${CMAKE_SOURCE_DIR}/include/tuple_utils.hpp
         ${CMAKE_SOURCE_DIR}/include/type_collections.hpp
         ${CMAKE_SOURCE_DIR}/include/type_list.hpp
         ${CMAKE_SOURCE_DIR}/include/type_list_creation.hpp
