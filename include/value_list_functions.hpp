@@ -169,8 +169,10 @@ constexpr auto zip(value_list<V...>, value_list<U...>)
  * a list of the elements between Start <= I < End.
  */
 template<int Start, int End, auto ...V>
-auto slice(value_list<V...> List)
+constexpr auto slice(value_list<V...>)
 {
+    constexpr auto List = value_list<V...>{};
+
     static_assert((Start >=0) && (Start <= End) && End<=List.size(), "tmpl::slice(value_list): Invalid Bounds");
     return detail::slice_helper<Start,End>(List, std::make_integer_sequence<int, List.size()>{});
 }

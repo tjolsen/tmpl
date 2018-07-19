@@ -11,6 +11,9 @@
 #include "detail/value_list_creation_detail.hpp"
 
 #include "utils/int_pow.hpp"
+#include "utils/int_log2.hpp"
+
+#include <utility>
 
 NAMESPACE_TMPL_OPEN
 
@@ -41,8 +44,8 @@ constexpr auto iterate_value() {
  *
  * decltype(arithmetic_sequence<N,S>()) == value_list<S, S+1, ..., S+N-1>
  *
- * Like iterate_value, it attempts to reduce the number of types instantiated
- * by the compiler.
+ * This takes advantage of the O(1) make_integer_sequence in clang (maybe gcc?)
+ * and falls back to a O(logN) implementation if it is not available.
  *
  * @tparam N Number of terms in sequence
  * @tparam Start Starting value (default = 0)
@@ -52,21 +55,10 @@ constexpr auto arithmetic_sequence() {
 
     static_assert(N >= 0, "Must specify a non-negative sequence length");
 
-    if constexpr(N==0) {
-        return value_list<>{};
-    }
-    else if constexpr (N == 1) {
-        return value_list<Start>{};
+    if constexpr (Start == 0) {
+        return detail::value_list_from_integer_sequence(std::make_integer_sequence<int,N>{});
     } else {
-
-        constexpr auto Nhalf = N/2;
-        auto Nhalf_seq_S0 = arithmetic_sequence<Nhalf,0>();
-
-        if constexpr (Nhalf*2 < N) {
-            return detail::add_const<Start>(Nhalf_seq_S0) | (detail::add_const<Start+Nhalf>(Nhalf_seq_S0) | value_list<Start + N - 1>{});
-        } else {
-            return detail::add_const<Start>(Nhalf_seq_S0) | detail::add_const<Start+Nhalf>(Nhalf_seq_S0);
-        }
+        return detail::add_const<Start>(detail::value_list_from_integer_sequence(std::make_integer_sequence<int,N>{}));
     }
 }
 
@@ -78,9 +70,8 @@ constexpr auto arithmetic_sequence() {
  * be easier.
  */
 template<int N, int B>
-auto geometric_sequence() {
+constexpr auto geometric_sequence() {
     auto arith = arithmetic_sequence<N>();
-
     return transform(arith, [](auto &&x) { return int_pow(B, x); });
 }
 
