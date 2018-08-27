@@ -10,11 +10,11 @@
 NAMESPACE_TMPL_OPEN
 
 constexpr int log2(int N) {
-    if(N < 0) {
+    if (N < 0) {
         throw "Cannot pass negative int to log2";
     }
     int result = 0;
-    while(N/2 > 0) {
+    while (N / 2 > 0) {
         ++result;
         N /= 2;
     }
@@ -23,4 +23,4 @@ constexpr int log2(int N) {
 
 NAMESPACE_TMPL_CLOSE
 
-#endif //TMPL_INT_LOG2_HPP
+#endif // TMPL_INT_LOG2_HPP

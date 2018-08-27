@@ -149,22 +149,22 @@ auto slice_helper(type_list<V...>, std::integer_sequence<int, I...>) {
         }
     };
 
-    return (f(type_list<V>{}, std::integral_constant<int, I>{}) | ... | type_list<>{});
+    return (f(type_list<V>{}, std::integral_constant<int, I>{}) | ... |
+            type_list<>{});
 }
 
-}//end namespace detail
+} // end namespace detail
 
 /**
  * Return a slice from a type_list. Returns
  * a list of the elements between Start <= I < End.
  */
-template<int Start, int End, typename ...V>
-auto slice(type_list<V...> List) {
-    static_assert((Start >= 0) && (Start <= End) && End <= List.size(), "tmpl::slice(type_list): Invalid Bounds");
-    return detail::slice_helper<Start, End>(List, std::make_integer_sequence<int, List.size()>{});
-
+template <int Start, int End, typename... V> auto slice(type_list<V...> List) {
+    static_assert((Start >= 0) && (Start <= End) && End <= List.size(),
+                  "tmpl::slice(type_list): Invalid Bounds");
+    return detail::slice_helper<Start, End>(
+        List, std::make_integer_sequence<int, List.size()>{});
 }
-
 
 /**
  * Transform a type_list into a new type_list.
@@ -173,22 +173,22 @@ auto slice(type_list<V...> List) {
  * The results are concatenated together using operator| and
  * a fold expression.
  */
-template<typename ...T, typename F>
+template <typename... T, typename F>
 constexpr auto transform(type_list<T...>, F predicate) {
-    static_assert((is_type_list_v<std::result_of_t<F(Type<T>)>> && ...), "predicate must return a type_list");
+    static_assert((is_type_list_v<std::result_of_t<F(Type<T>)>> && ...),
+                  "predicate must return a type_list");
     return (predicate(Type<T>{}) | ... | type_list<>{});
 };
-
 
 /**
  * Select the elements of a value_list for which a
  * user-supplied unary predicate returns true
  */
-template<typename ...T, typename F>
+template <typename... T, typename F>
 constexpr auto select_if(type_list<T...>, F predicate) {
 
     constexpr auto f = [predicate](auto x) {
-        if constexpr ((bool) predicate(std::decay_t<decltype(x)>{})) {
+        if constexpr ((bool)predicate(std::decay_t<decltype(x)>{})) {
             return x;
         } else {
             return type_list<>{};
@@ -198,28 +198,25 @@ constexpr auto select_if(type_list<T...>, F predicate) {
     return (f(type_list<T>{}) | ... | type_list<>{});
 }
 
-
 /**
  * Return the index of a type within a type list.
  * Return the length of the type list if the type is not contained.
  */
-template<typename ...T, typename V>
+template <typename... T, typename V>
 constexpr auto find(type_list<T...> List, type_list<V> query) {
     if constexpr (List.size() > 1) {
         return (List.head() == query) ? 0 : 1 + find(List.tail(), query);
     } else {
         return List == query ? 0 : 1;
     }
-
 }
 
 /**
  * Get the type at the head of the type_list
  */
-template<typename TL>
+template <typename TL>
 using head_type_t = std::decay_t<decltype(unbox(TL{}.head()))>;
 
 NAMESPACE_TMPL_CLOSE
-
 
 #endif

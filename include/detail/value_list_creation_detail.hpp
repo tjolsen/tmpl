@@ -11,17 +11,16 @@
 
 NAMESPACE_TMPL_DETAIL_OPEN
 
-template<auto V, auto ...VV>
-constexpr auto add_const(value_list<VV...>) {
+template <auto V, auto... VV> constexpr auto add_const(value_list<VV...>) {
     return value_list<V + VV...>{};
 };
 
-template<typename T, T ...V>
-constexpr auto value_list_from_integer_sequence(std::integer_sequence<T, V...>) {
+template <typename T, T... V>
+constexpr auto
+value_list_from_integer_sequence(std::integer_sequence<T, V...>) {
     return value_list<V...>{};
 };
 
-
 NAMESPACE_TMPL_DETAIL_CLOSE
 
-#endif //TMPL_VALUE_LIST_CREATION_DETAIL_HPP
+#endif // TMPL_VALUE_LIST_CREATION_DETAIL_HPP

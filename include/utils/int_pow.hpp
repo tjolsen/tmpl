@@ -11,12 +11,11 @@ NAMESPACE_TMPL_OPEN
 
 /**
  *  Compute the power A^B at compile time for integral types
-  */
-template<typename T, typename U>
-constexpr auto int_pow(T A, U B) {
+ */
+template <typename T, typename U> constexpr auto int_pow(T A, U B) {
 
     auto result = T{1};
-    for(int i=0; i<B; ++i) {
+    for (int i = 0; i < B; ++i) {
         result *= A;
     }
 
@@ -25,4 +24,4 @@ constexpr auto int_pow(T A, U B) {
 
 NAMESPACE_TMPL_CLOSE
 
-#endif //TMPL_INT_POW_HPP
+#endif // TMPL_INT_POW_HPP

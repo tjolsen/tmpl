@@ -9,52 +9,37 @@
 
 NAMESPACE_TMPL_OPEN
 
-template<auto ...V>
-struct value_list
-{
-private:
+template <auto... V> struct value_list {
+  private:
+    template <auto... U> struct value_list_ {};
 
-    template<auto ...U>
-    struct value_list_{};
-
-    template<auto U, auto ...Tail>
-    struct value_list_<U, Tail...> {
+    template <auto U, auto... Tail> struct value_list_<U, Tail...> {
         constexpr static auto head() { return value_list<U>{}; }
         constexpr static auto tail() { return value_list<Tail...>{}; }
     };
 
-
-public:
+  public:
     static constexpr int size() { return sizeof...(V); }
 
-    template<auto U>
-    static constexpr bool contains(value_list<U>) {
+    template <auto U> static constexpr bool contains(value_list<U>) {
         auto f = [](auto &&xv, auto &&xu) {
-            return std::is_same_v<std::decay_t<decltype(xv)>, std::decay_t<decltype(xu)>>
-                && (xv == xu);
+            return std::is_same_v<std::decay_t<decltype(xv)>,
+                                  std::decay_t<decltype(xu)>> &&
+                   (xv == xu);
         };
-        return ( f(V,U) || ...);
+        return (f(V, U) || ...);
     }
 
+    static constexpr auto head() { return value_list_<V...>::head(); }
 
-    static constexpr auto head()
-    {
-        return value_list_<V...>::head();
-    }
-
-    static constexpr auto tail()
-    {
-        return value_list_<V...>::tail();
-    }
-
+    static constexpr auto tail() { return value_list_<V...>::tail(); }
 };
 
 /**
  * Type alias for a value list with a single element
  */
-template<auto V>
-using Value = value_list<V>;
+template <auto V> using Value = value_list<V>;
 
 NAMESPACE_TMPL_CLOSE
 
-#endif //TMPL_VALUE_LIST_HPP
+#endif // TMPL_VALUE_LIST_HPP

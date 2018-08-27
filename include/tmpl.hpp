@@ -10,10 +10,10 @@
 
 #include "tuple_utils.hpp"
 
+#include "type_collections.hpp"
 #include "type_list.hpp"
 #include "type_list_creation.hpp"
 #include "type_list_functions.hpp"
-#include "type_collections.hpp"
 
 #include "value_list.hpp"
 #include "value_list_creation.hpp"

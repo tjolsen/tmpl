@@ -11,14 +11,9 @@
 
 NAMESPACE_TMPL_OPEN
 
-template<auto ...V>
-constexpr auto sum(value_list<V...>) {
-    return (V + ...);
-}
+template <auto... V> constexpr auto sum(value_list<V...>) { return (V + ...); }
 
-
-template<auto ...V>
-constexpr auto minimum (value_list<V...> List) {
+template <auto... V> constexpr auto minimum(value_list<V...> List) {
     auto result = unbox(List.head());
 
     auto min_func = [&result](auto &&x) {
@@ -31,8 +26,7 @@ constexpr auto minimum (value_list<V...> List) {
     return result;
 }
 
-template<auto ...V>
-constexpr auto maximum (value_list<V...> List) {
+template <auto... V> constexpr auto maximum(value_list<V...> List) {
     auto result = unbox(List.head());
 
     auto min_func = [&result](auto &&x) {
@@ -45,12 +39,11 @@ constexpr auto maximum (value_list<V...> List) {
     return result;
 }
 
-template<auto ...V, auto ...U>
+template <auto... V, auto... U>
 constexpr auto dot(value_list<V...>, value_list<U...>) {
-    return sum(value_list<(V*U)...>{});
+    return sum(value_list<(V * U)...>{});
 }
-
 
 NAMESPACE_TMPL_CLOSE
 
-#endif //TMPL_VALUE_LIST_MATH_HPP
+#endif // TMPL_VALUE_LIST_MATH_HPP

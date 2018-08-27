@@ -1,3 +1,4 @@
+
 //
 // Created by tyler on 1/13/18.
 //
@@ -16,11 +17,9 @@
 
 NAMESPACE_TMPL_OPEN
 
-
-
-
 /**
- * Test whether a given code fragment is valid. Useful for constructing other concepts.
+ * Test whether a given code fragment is valid. Useful for constructing other
+ * concepts.
  *
  * Example usage:
  *
@@ -34,75 +33,60 @@ NAMESPACE_TMPL_OPEN
  * has_member_a(tmpl::type_list<B>{}); //constexpr false
  * \endcode
  */
-template<typename F>
-constexpr auto is_valid(F &&f)
-{
+template <typename F> constexpr auto is_valid(F &&f) {
     return [](auto &&x) {
-        static_assert(is_type_list_v<std::decay_t<decltype(x)> >
-                      && (std::decay_t<decltype(x)>::size() == 1),
-                      "Must pass a type_list<T> into function returned from tmpl::is_valid");
-        return detail::is_valid_helper<F, tmpl::head_type_t<decltype(x)>>::value;
+        static_assert(is_type_list_v<std::decay_t<decltype(x)>> &&
+                          (std::decay_t<decltype(x)>::size() == 1),
+                      "Must pass a type_list<T> into function returned from "
+                      "tmpl::is_valid");
+        return detail::is_valid_helper<F,
+                                       tmpl::head_type_t<decltype(x)>>::value;
     };
 }
-
 
 ///@{
 /**
  * Trait to test whether a type is a value_list
  */
-template<typename T>
-struct is_value_list : std::false_type
-{
-};
+template <typename T> struct is_value_list : std::false_type {};
 
-template<auto ...V>
-struct is_value_list<value_list<V...>> : std::true_type
-{
-};
+template <auto... V> struct is_value_list<value_list<V...>> : std::true_type {};
 
-template<typename T>
+template <typename T>
 constexpr inline bool is_value_list_v = is_value_list<T>::value;
 ///@}
-
-
-
-
 
 NAMESPACE_TMPL_CLOSE
 
 /**
  * Macro definition to test if TYPE has a member called MEMBER
  */
-#define tmpl_has_member(TYPE, MEMBER) \
-    tmpl::is_valid([](auto &&x) constexpr -> decltype((void)x.MEMBER) {})(tmpl::type_list<TYPE>{})
+#define tmpl_has_member(TYPE, MEMBER)                                          \
+    tmpl::is_valid([](auto &&x) constexpr->decltype((void)x.MEMBER){})(        \
+        tmpl::type_list<TYPE>{})
 
 /**
  * Macro to test whether a type TYPE has a public typedef TYPEDEF_NAME
  */
-#define tmpl_has_typedef(TYPE, TYPEDEF_NAME) \
-    tmpl::is_valid([](auto &&x) constexpr ->decltype((void)(std::declval<typename std::decay_t<decltype(x)>::TYPEDEF_NAME>())) \
-    {})(tmpl::type_list<TYPE>{})
+#define tmpl_has_typedef(TYPE, TYPEDEF_NAME)                                   \
+    tmpl::is_valid([](auto &&x) constexpr->decltype(                           \
+        (void)(std::declval<                                                   \
+               typename std::decay_t<decltype(x)>::TYPEDEF_NAME>())){})(       \
+        tmpl::type_list<TYPE>{})
 
 /**
  * Macro to test whether a type TYPE has a public member function MEMBER
  */
-#define tmpl_has_nonstatic_member_function(TYPE, MEMBER)             \
-    tmpl::is_valid([](auto &&x) constexpr -> std::enable_if_t<       \
-            std::is_function_v<                                      \
-                 tmpl::detail::member_ptr_helper_t<                  \
-                 decltype(&std::decay_t<decltype(x)>::MEMBER)        \
-                 >                                                   \
-            >                                                        \
-    >{})(tmpl::type_list<TYPE>{})
+#define tmpl_has_nonstatic_member_function(TYPE, MEMBER)                       \
+    tmpl::is_valid([](auto &&x) constexpr->std::enable_if_t<                   \
+                   std::is_function_v<tmpl::detail::member_ptr_helper_t<       \
+                       decltype(&std::decay_t<decltype(x)>::MEMBER)>>>{})(     \
+        tmpl::type_list<TYPE>{})
 
-#define tmpl_has_static_member_function(TYPE, MEMBER)                \
-    tmpl::is_valid([](auto &&x) constexpr -> std::enable_if_t<       \
-            std::is_function_v<                                      \
-                 std::remove_pointer_t<                              \
-                 decltype(&std::decay_t<decltype(x)>::MEMBER)        \
-                 >                                                   \
-            >                                                        \
-    >{})(tmpl::type_list<TYPE>{})
+#define tmpl_has_static_member_function(TYPE, MEMBER)                          \
+    tmpl::is_valid([](auto &&x) constexpr->std::enable_if_t<                   \
+                   std::is_function_v<std::remove_pointer_t<decltype(          \
+                       &std::decay_t<decltype(x)>::MEMBER)>>>{})(              \
+        tmpl::type_list<TYPE>{})
 
-
-#endif //TMPL_CONCEPTS_HPP
+#endif // TMPL_CONCEPTS_HPP

@@ -5,13 +5,13 @@
 #ifndef TMPL_VALUE_LIST_CREATION_HPP
 #define TMPL_VALUE_LIST_CREATION_HPP
 
+#include "detail/value_list_creation_detail.hpp"
 #include "tmpl_common.hpp"
 #include "value_list.hpp"
 #include "value_list_functions.hpp"
-#include "detail/value_list_creation_detail.hpp"
 
-#include "utils/int_pow.hpp"
 #include "utils/int_log2.hpp"
+#include "utils/int_pow.hpp"
 
 #include <utility>
 
@@ -24,20 +24,17 @@ NAMESPACE_TMPL_OPEN
  * create. This version instantiates O(logN) types rather
  * than O(N) of an inheritance-based version.
  */
-template<auto V, int N>
-constexpr auto iterate_value() {
+template <auto V, int N> constexpr auto iterate_value() {
 
     if constexpr (N == 0) {
         return value_list<>{};
     } else if constexpr (N == 1) {
         return value_list<V>{};
     } else {
-        constexpr auto Nhalf = N/2;
-        return iterate_value<V,Nhalf>() | iterate_value<V, N-Nhalf>();
+        constexpr auto Nhalf = N / 2;
+        return iterate_value<V, Nhalf>() | iterate_value<V, N - Nhalf>();
     }
-
 }
-
 
 /**
  * Make a value_list containing an arithmetic sequence:
@@ -50,18 +47,19 @@ constexpr auto iterate_value() {
  * @tparam N Number of terms in sequence
  * @tparam Start Starting value (default = 0)
  */
-template<int N, int Start = 0>
-constexpr auto arithmetic_sequence() {
+template <int N, int Start = 0> constexpr auto arithmetic_sequence() {
 
     static_assert(N >= 0, "Must specify a non-negative sequence length");
 
     if constexpr (Start == 0) {
-        return detail::value_list_from_integer_sequence(std::make_integer_sequence<int,N>{});
+        return detail::value_list_from_integer_sequence(
+            std::make_integer_sequence<int, N>{});
     } else {
-        return detail::add_const<Start>(detail::value_list_from_integer_sequence(std::make_integer_sequence<int,N>{}));
+        return detail::add_const<Start>(
+            detail::value_list_from_integer_sequence(
+                std::make_integer_sequence<int, N>{}));
     }
 }
-
 
 /**
  * Create a geometric sequence of length N with base B.
@@ -69,12 +67,11 @@ constexpr auto arithmetic_sequence() {
  * creating a basic geometric_sequence and further transforming it will
  * be easier.
  */
-template<int N, int B>
-constexpr auto geometric_sequence() {
+template <int N, int B> constexpr auto geometric_sequence() {
     auto arith = arithmetic_sequence<N>();
     return transform(arith, [](auto &&x) { return int_pow(B, x); });
 }
 
 NAMESPACE_TMPL_CLOSE
 
-#endif //TMPL_VALUE_LIST_CREATION_HPP
+#endif // TMPL_VALUE_LIST_CREATION_HPP

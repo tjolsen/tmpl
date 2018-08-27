@@ -11,11 +11,11 @@
 
 NAMESPACE_TMPL_DETAIL_OPEN
 
-template<typename ...T, typename F>
+template <typename... T, typename F>
 constexpr auto select_if_helper(type_list<T...>, F f) {
     return (f(T{}) | ... | value_list<>{});
 }
 
 NAMESPACE_TMPL_DETAIL_CLOSE
 
-#endif //TMPL_SELECT_IF_DETAIL_HPP
+#endif // TMPL_SELECT_IF_DETAIL_HPP

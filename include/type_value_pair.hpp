@@ -16,24 +16,23 @@ NAMESPACE_TMPL_OPEN
  * It is meant to be the element in a type_list resulting from
  * a "zip" operation between a type_list and a value_list.
  */
-template<typename T, auto V>
-struct tv_pair {
+template <typename T, auto V> struct tv_pair {
     constexpr auto type() { return type_list<T>{}; }
     constexpr auto value() { return V; }
 };
 
-template<typename ...T, auto ...V>
+template <typename... T, auto... V>
 constexpr auto zip(type_list<T...> Tlist, value_list<V...> Vlist) {
     static_assert(Tlist.size() == Vlist.size(), "Lists must have equal length");
-    return (type_list<tv_pair<T,V>>{} | ... | type_list<>{});
+    return (type_list<tv_pair<T, V>>{} | ... | type_list<>{});
 }
 
-template<typename ...T, auto ...V>
+template <typename... T, auto... V>
 constexpr auto zip(value_list<V...> Vlist, type_list<T...> Tlist) {
     static_assert(Tlist.size() == Vlist.size(), "Lists must have equal length");
-    return (type_list<tv_pair<T,V>>{} | ... | type_list<>{});
+    return (type_list<tv_pair<T, V>>{} | ... | type_list<>{});
 }
 
 NAMESPACE_TMPL_CLOSE
 
-#endif //TMPL_TYPE_VALUE_PAIR_HPP
+#endif // TMPL_TYPE_VALUE_PAIR_HPP

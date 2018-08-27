@@ -15,15 +15,17 @@ NAMESPACE_TMPL_OPEN
  * that can accept any type
  */
 struct Null {
-    template<typename T>
-    constexpr Null(T &&) {}
+    template <typename T> constexpr Null(T &&) {}
 
-    template<typename T, typename = typename std::enable_if_t<!std::is_same_v<void, T>>>
-    constexpr operator Null (T && t) { return Null(t); }
+    template <typename T,
+              typename = typename std::enable_if_t<!std::is_same_v<void, T>>>
+    constexpr operator Null(T &&t) {
+        return Null(t);
+    }
 
-    constexpr operator Null (void) { return Null(int{}); }
+    constexpr operator Null(void) { return Null(int{}); }
 };
 
 NAMESPACE_TMPL_CLOSE
 
-#endif //TMPL_NULL_HPP
+#endif // TMPL_NULL_HPP
