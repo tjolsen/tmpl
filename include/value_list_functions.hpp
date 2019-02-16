@@ -119,7 +119,7 @@ constexpr auto symmetric_difference(value_list<T...> LT, value_list<U...> LU) {
  * Basic for-each over elements of a value list
  */
 template <auto... V, typename F> void for_each(value_list<V...>, F &&f) {
-    (f(V), ...);
+    (f(value_list<V>{}), ...);
 }
 
 /**

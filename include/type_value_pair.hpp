@@ -17,6 +17,7 @@ NAMESPACE_TMPL_OPEN
  * a "zip" operation between a type_list and a value_list.
  */
 template <typename T, auto V> struct tv_pair {
+    using type_t = T;
     constexpr auto type() { return type_list<T>{}; }
     constexpr auto value() { return V; }
 };
