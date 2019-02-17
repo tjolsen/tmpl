@@ -3,6 +3,7 @@
 
 #include "type_list.hpp"
 #include <tuple>
+#include <variant>
 
 NAMESPACE_TMPL_OPEN
 
@@ -121,6 +122,24 @@ constexpr auto as_tuple(type_list<T...>) {
  */
 template<typename TL>
 using as_tuple_t = std::enable_if_t<is_type_list_v<TL>, std::decay_t<decltype(as_tuple(TL{}))>>;
+
+
+/**
+ * Return a default-constructed variant of the types
+ * contained in the list.
+ */
+template<typename ...T>
+constexpr auto as_variant(type_list<T...>) {
+    return std::variant<T...>();
+}
+
+
+/**
+ * The type of the variant returned by as_variant
+ */
+template<typename TL>
+using as_variant_t = std::enable_if_t<is_type_list_v<TL>, std::decay_t<decltype(as_variant(TL{}))>>;
+
 
 /**
  * Basic for_each loop over elements of the type list
