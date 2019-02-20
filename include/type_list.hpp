@@ -39,6 +39,13 @@ static constexpr bool operator==(type_list<T...>, type_list<U...>) {
     return (std::is_same_v<T, U> && ...);
 }
 
+// Compare two type lists
+template <typename... T, typename... U>
+static constexpr bool operator!=(type_list<T...>, type_list<U...>) {
+    return !(std::is_same_v<T, U> && ...);
+}
+
+
 template <typename T> using Type = type_list<T>;
 
 ///@{

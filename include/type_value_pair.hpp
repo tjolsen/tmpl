@@ -18,8 +18,8 @@ NAMESPACE_TMPL_OPEN
  */
 template <typename T, auto V> struct tv_pair {
     using type_t = T;
-    constexpr auto type() { return type_list<T>{}; }
-    constexpr auto value() { return V; }
+    constexpr auto type() const { return type_list<T>{}; }
+    constexpr auto value() const { return V; }
 };
 
 template <typename... T, auto... V>
