@@ -22,4 +22,6 @@
 
 #include "type_value_pair.hpp"
 
+#include "utils/type_name.hpp"
+
 #endif

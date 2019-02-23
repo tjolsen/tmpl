@@ -187,10 +187,15 @@ auto slice(type_list<V...> List) {
  * The results are concatenated together using operator| and
  * a fold expression.
  */
+template<typename... T, typename F, typename Fallback=type_list<>>
+constexpr auto transform(type_list<T...>, F predicate, Fallback fallback) {
+    return (predicate(Type<T>{}) | ... | fallback);
+};
+
 template<typename... T, typename F>
 constexpr auto transform(type_list<T...>, F predicate) {
-    static_assert((is_type_list_v<std::result_of_t<F(Type<T>)>> && ...),
-                  "predicate must return a type_list");
+    //static_assert((is_type_list_v<std::result_of_t<F(Type<T>)>> && ...),
+    //              "predicate must return a type_list");
     return (predicate(Type<T>{}) | ... | type_list<>{});
 };
 

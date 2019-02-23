@@ -151,8 +151,9 @@ constexpr auto slice(value_list<V...>) {
  */
 template <auto... V, typename F>
 constexpr auto transform(value_list<V...>, F f) {
-    return (value_list<f(V)>{} | ... | value_list<>{});
+    return (f(value_list<V>{}) | ... ); //| value_list<>{});
 }
+
 
 ///@{
 /**

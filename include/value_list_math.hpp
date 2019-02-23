@@ -11,9 +11,14 @@
 
 NAMESPACE_TMPL_OPEN
 
-template <auto... V> constexpr auto sum(value_list<V...>) { return (V + ...); }
+template<auto... V>
+constexpr auto sum(value_list<V...>) {
+    return (V + ...);
+}
 
-template <auto... V> constexpr auto minimum(value_list<V...> List) {
+template<auto... V>
+constexpr auto minimum(value_list<V...> List) {
+    static_assert(List.size() > 0, "Pass a non-empty list");
     auto result = unbox(List.head());
 
     auto min_func = [&result](auto &&x) {
@@ -26,7 +31,9 @@ template <auto... V> constexpr auto minimum(value_list<V...> List) {
     return result;
 }
 
-template <auto... V> constexpr auto maximum(value_list<V...> List) {
+template<auto... V>
+constexpr auto maximum(value_list<V...> List) {
+    static_assert(List.size() > 0, "Pass a non-empty list");
     auto result = unbox(List.head());
 
     auto min_func = [&result](auto &&x) {
@@ -39,9 +46,29 @@ template <auto... V> constexpr auto maximum(value_list<V...> List) {
     return result;
 }
 
-template <auto... V, auto... U>
+template<auto... V, auto... U>
 constexpr auto dot(value_list<V...>, value_list<U...>) {
     return sum(value_list<(V * U)...>{});
+}
+
+template<auto... V, auto... U>
+constexpr auto add(value_list<V...>, value_list<U...>) {
+    return value_list<(V + U)...>{};
+}
+
+template<auto... V, auto... U>
+constexpr auto operator+(value_list<V...>, value_list<U...>) {
+    return value_list<(V + U)...>{};
+}
+
+template<auto... V, auto... U>
+constexpr auto sub(value_list<V...>, value_list<U...>) {
+    return value_list<(V - U)...>{};
+}
+
+template<auto... V, auto... U>
+constexpr auto operator-(value_list<V...>, value_list<U...>) {
+    return value_list<(V - U)...>{};
 }
 
 NAMESPACE_TMPL_CLOSE
