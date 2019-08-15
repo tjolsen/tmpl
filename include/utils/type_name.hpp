@@ -31,6 +31,11 @@ constexpr std::string_view type_name() {
 #endif
 }
 
+template<typename T>
+constexpr std::string_view type_name_of(T &&) {
+    return type_name<std::remove_reference_t<T>>();
+}
+
 NAMESPACE_TMPL_CLOSE
 
 #endif

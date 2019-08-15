@@ -5,7 +5,8 @@
 #include "catch.hpp"
 #include "type_list_creation.hpp"
 #include "value_list_creation.hpp"
-
+#include "value_list_io.hpp"
+#include "utils/type_name.hpp"
 #include <iostream>
 
 #include <type_traits>
@@ -47,7 +48,10 @@ TEST_CASE("geometric_sequence", "[value_list]") {
 
     auto gseq_2 = geometric_sequence<Ref_2.size(), 2>();
     auto gseq_3 = geometric_sequence<Ref_3.size(), 3>();
-
+    std::cout << gseq_2 << "\n" << gseq_3 << "\n";
+    std::cout << type_name_of(gseq_2) << "\n";
+    std::cout << type_name_of(gseq_2) << "\n";
+    
     CHECK((std::is_same_v<decltype(Ref_2), decltype(gseq_2)>));
     CHECK((std::is_same_v<decltype(Ref_3), decltype(gseq_3)>));
 }

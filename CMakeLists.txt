@@ -67,7 +67,7 @@ target_compile_options(sandbox PUBLIC "-Wall")
 option(BUILD_EXAMPLES "Build tmpl examples" ON)
 
 if(BUILD_EXAMPLES)
-    add_subdirectory(tests)
+    add_subdirectory(examples)
 endif()
 
 #-------------------------------
@@ -76,5 +76,5 @@ endif()
 option(BUILD_TESTS "Build tmpl tests" ON)
 
 if(BUILD_TESTS)
-    add_subdirectory(examples)
+    add_subdirectory(tests)
 endif()
